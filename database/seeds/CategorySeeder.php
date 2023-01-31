@@ -11,6 +11,23 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        //
+        $categories = [
+            'Attualità e dintorni',
+            'Scuola',
+            'Politica',
+            'Estero',
+            'Italia',
+            'Cucina',
+            'Informatica',
+            'Gossip',
+        ];
+
+        foreach($categories as $category) {
+            Category::create([
+                'slug' => Str::slug($category),
+                'name' => $category,
+                'description'
+            ]);
+        }
     }
 }
