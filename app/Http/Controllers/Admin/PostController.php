@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Post;
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
@@ -31,7 +32,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $categories = Category::all('id', 'name');
+        return view('admin.posts.create', [
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -46,8 +50,9 @@ class PostController extends Controller
         $request->validate([
             'slag'      => 'required|string|max:100|unique:posts',
             'title'     => 'required|string|max:100',
+            'category_id'     => 'required|integer|exists:categories,id',
             'image'     => 'string|max:100',
-            'uploaded_img' => 'required|image|max:10240',
+            'uploaded_img' => 'image|max:10240',
             'content'   => 'string',
             'except'    => 'string',
         ]);
@@ -56,7 +61,7 @@ class PostController extends Controller
         //richiesta dati al db
         $data = $request->all();
 
-        $img_path = Storage::put('uploads', $data['uploaded_img']);
+        $img_path = isset($data['uploaded_img']) ? Storage::put('uploads', $data['uploaded_img']) : null;
 
         //salvare i dati nel db
         $post = new Post;
@@ -114,7 +119,7 @@ class PostController extends Controller
             'title'     => 'required|string|max:100',
             'image'     => 'string|max:100',
             'content'   => 'string',
-            'uploaded_img' => 'required|image|max:10240',
+            'uploaded_img' => 'image|max:10240',
             'except'    => 'string',
         ]);
 
@@ -122,7 +127,7 @@ class PostController extends Controller
         //richiesta dati al db
         $data = $request->all();
 
-        $img_path = Storage::put('uploads', $data['uploaded_img']);
+        $img_path = isset($data['uploaded_img']) ? Storage::put('uploads', $data['uploaded_img']) : null;
 
         Storage::delete($post->uploaded_img);
 

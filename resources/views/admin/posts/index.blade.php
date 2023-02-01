@@ -13,6 +13,7 @@
               <th scope="col">ID</th>
               <th scope="col">Slag</th>
               <th scope="col">Title</th>
+              <th scope="col">Categoria</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
@@ -22,13 +23,14 @@
                       <td>{{ $post->id }}</td>
                       <td>{{ $post->slag }}</td>
                       <td>{{ $post->title }}</td>
+                      <td>{{ $post->category->name }}</td>
                       <td>
                           {{-- <a href="/posts/{{ $post->id }}" class="btn btn-primary">Visita</a> --}}
                           <a href="{{ route('admin.posts.show', ['post' => $post->id])}}" class="btn btn-primary">Visit</a>
                       </td>
                       <td>
                           <a href="{{ route('admin.posts.edit', ['post' => $post])}}" class="btn btn-warning">Edit</a>
-                      </td>
+                      </td> 
                       <td>
                         <form action="{{ route('admin.posts.destroy', ['post' => $post])}}" method="post">
                           @method('DELETE')
