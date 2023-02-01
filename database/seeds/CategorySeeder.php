@@ -1,5 +1,7 @@
 <?php
 
+use App\Category;
+use Faker\Generator as Faker;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
@@ -9,7 +11,7 @@ class CategorySeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(Faker $faker)
     {
         $categories = [
             'Attualità e dintorni',
@@ -24,9 +26,9 @@ class CategorySeeder extends Seeder
 
         foreach($categories as $category) {
             Category::create([
-                'slug' => Str::slug($category),
+                'slug' => Category::getSlugger($category),
                 'name' => $category,
-                'description'
+                'description' => $faker->paragraphs(rand(1, 5), true),
             ]);
         }
     }
